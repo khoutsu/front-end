@@ -1,26 +1,11 @@
-export async function searchMovie(search_data) {
-  try {
-    console.log("search_data: " + search_data);
-
-    const response = await fetch(
-      "https://api.se-rmutl.net/api/movie/search?search_text=" + search_data
-    );
-
-    return await response.json(); //***
-
-    // console.log('Search Movie response: ' + await response);
-  } catch (error) {
-    return [];
-  }
-}
-
+const bearerToken = "1234567890";
 export async function getAllMovies() {
   try {
-    //const response = await fetch('/api/users');
-    //const response = await fetch('/api/movie/all');
-    const response = await fetch("https://api.se-rmutl.net/api/movie/all");
-
-    //const response = await fetch('/api/movie/all');
+    const response = await fetch("https://api.se-rmutl.net/api/movie/all", {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    });
     return await response.json();
   } catch (error) {
     return [];
@@ -28,14 +13,33 @@ export async function getAllMovies() {
 }
 
 export async function createMovie(data) {
-  const response = await fetch(`https://api.se-rmutl.netapi/movie/insert`, {
-    //mode: 'no-cors',
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  console.log("Create Movie response: " + (await response));
+  try {
+    const response = await fetch("https://api.se-rmutl.net/api/movie/insert", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${bearerToken}`,
+      },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (error) {
+    return { error: "Failed to create movie" };
+  }
+}
 
-  // return  response.json();
-  return response;
+export async function searchMovie(search_text) {
+  try {
+    const response = await fetch(
+      `https://api.se-rmutl.net/api/movie/search?search_text=${search_text}`,
+      {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+        },
+      }
+    );
+    return await response.json();
+  } catch (error) {
+    return [];
+  }
 }
