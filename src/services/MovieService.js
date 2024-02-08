@@ -1,4 +1,4 @@
-const bearerToken = "1234567890";
+import bearerToken from "../components/BearerToken";
 export async function getAllMovies() {
   try {
     const response = await fetch("https://api.se-rmutl.net/api/movie/all", {
